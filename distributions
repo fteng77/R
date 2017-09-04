@@ -1,0 +1,57 @@
+# set.seed(42)
+# p1 <- hist(rnorm(500,4)) # centered at 4
+# p2 <- hist(rnorm(500,6)) # centered at 6
+# plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,10)) # first histogram
+# plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,10), add=T) # second
+#simulation number
+n<-10000
+
+#离散分布
+##0-1分布（贝努利分布）
+x1<-sample(c(0,1),n, replace = T,prob=c(0.7,0.3))
+x2<-sample(c(0,1),n, replace = T,prob=c(0.5,0.5))
+mean(x1)
+mean(x2)
+sd(x1)
+sd(x2)
+
+##二项式分布
+b1<-rbinom(n,50,0.9)
+b2<-rbinom(n,50,0.1)
+p1 <- hist(b1, xlim=c(0,50)) 
+p2 <- hist(b2, xlim=c(0,50)) 
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,50), freq=F) # first histogram
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,50), freq=F, add=T) # second
+
+##泊松分布
+pp1<-rpois(n,40)
+pp2<-rpois(n,5)
+p1 <- hist(pp1, xlim=c(0,50)) 
+p2 <- hist(pp2, xlim=c(0,50)) 
+plot( p1, col=rgb(0,0,1,1/4), ylim=c(0,0.2),xlim=c(0,100),freq=F) # first histogram
+plot( p2, col=rgb(1,0,0,1/4), ylim=c(0,0.2),xlim=c(0,100), freq=F, add=T) # second
+
+#连续分布
+##正态分布
+n1<-rnorm(n)
+n2<-rnorm(n,mean=0,sd=2)
+p1 <- hist(n1, xlim=c(-10,10)) 
+p2 <- hist(n2, xlim=c(-10,10)) 
+plot( p1, col=rgb(0,0,1,1/4),xlim=c(-10,10), freq=F) # first histogram
+plot( p2, col=rgb(1,0,0,1/4),xlim=c(-10,10), freq=F, add=T) # second
+
+##伽马分布
+g1<-rgamma(n,shape=1.2,scale=1)
+g2<-rgamma(n,shape=1.2,scale=2)
+p1 <- hist(g1, xlim=c(0,10)) 
+p2 <- hist(g2, xlim=c(0,10)) 
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,10), freq=F) # first histogram
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,10), freq=F, add=T) # second
+
+##对数正态分布
+ln1<-rlnorm(n,meanlog=0,sdlog=1)
+ln2<-rlnorm(n,meanlog=0,sdlog=2)
+p1 <- hist(ln1, xlim=c(0,100)) 
+p2 <- hist(ln2, xlim=c(0,100)) 
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,100), freq=F) # first histogram
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,100), freq=F, add=T) # second
