@@ -1,0 +1,12 @@
+library("REmap")
+x<-c("beijing","lasha","ningbo","hangzhou","wuhan","济南","shanghai","qingdao")
+y<-c()
+for (i in c(1:(length(x)-1))){
+  d<-c(x[i],x[i+1])
+  y<-c(y,d)
+}
+d<-c(x[length(x)],x[1])
+y<-c(y,d)
+(z<-matrix(y,ncol=2, byrow=T))
+out<-remap(as.data.frame(z))
+plot(out)
