@@ -1,0 +1,37 @@
+---
+title: "消费体验"
+output:
+  word_document: default
+  html_document: default
+date: "2017-8-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(3.1415926)
+x<-rnorm(100)
+y<-LETTERS
+
+```
+
+---
+
+##尊敬的**`r y[1]`**
+我们在九月份对贵单位进行了消费体验，有关事项告知如下：  
+贵单位的消费体验总分为`r x[13]`.  
+其中：  
+ - 项目1得分：**`r x[20]`**  
+ - 项目2得分：**`r x[21]`**  
+
+---
+
+我们的建议如下：
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+if(x[20]<0) y1<-c("buhao") else y1<-"henhao"
+if(x[21]<0) y2<-c("buhao") else y2<-"henhao"
+```
+1. `r y1`
+2. `r y2`
+
+thank you very much!
+
