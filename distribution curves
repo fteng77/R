@@ -1,0 +1,57 @@
+#risk distribution
+library(MASS)
+library(actuar)
+
+##binominal 
+curve(dbinom(x,100,0.1),from=0,to=100,xlab="0.1")
+curve(dbinom(x,100,0.9),from=0,to=100,add=T, col="red", type="l",xlab="0.9")
+curve(dbinom(x,100,0.5),from=0,to=100,add=T, col="blue", type="l",xlab="0.5")
+curve(dnorm(x,0,1),from=-5,to=5,ylab="p")
+curve(dnorm(x,0,2),from=-5,to=5,ylab="p",add=T,col="red")
+curve(dnorm(x,1,1),from=-5,to=5,ylab="p",add=T,col="blue")
+#legend(list("0.1","0.9"))
+
+##pois
+curve(dpois(x,1),from=0,to=10,ylab="p",type="h")
+curve(dpois(x,2),from=0,to=10,ylab="p",type="b",add=T,col="red")
+n<-100
+pp1<-rpois(n,40)
+pp2<-rpois(n,5)
+p1 <- hist(pp1, xlim=c(0,50),freq=T) 
+p2 <- hist(pp2, xlim=c(0,50),freq=T) 
+plot( p1, col=rgb(0,0,1,1/4), xlim=c(0,60),freq=T) # first histogram
+plot( p2, col=rgb(1,0,0,1/4), xlim=c(0,60), add=T,freq=T) # second
+
+##negative binom
+#curve(dnbinom(x,5,0.2))
+plot(dnbinom(c(0:100),5,0.2),type="h",ylab="p",xlab="x",ylim=c(0,0.15))
+lines(dnbinom(c(0:100),10,0.2),type="h",col=rgb(1,0,1,0.5))
+lines(dnbinom(c(0:100),5,0.5),type="h",col=rgb(0.5,0,0.5,0.5))
+####rgb(red, green, blue, alpha)就是一个调色盘
+
+##normal
+curve(pnorm(x,0,1),from=-5,to=5,ylab="p")
+curve(pnorm(x,0,2),from=-5,to=5,ylab="p",add=T,col="red")
+curve(pnorm(x,1,1),from=-5,to=5,ylab="p",add=T,col="blue")
+
+##lognormal
+curve(dlnorm(x,0,0.5),from=0,to=10,ylab="p")
+curve(dlnorm(x,0,1),from=0,to=10,add=T,col="red")
+curve(dlnorm(x,0,1.5),from=0,to=10,add=T,col="red")
+
+##gamma
+curve(dgamma(x,1.5,scale=1),from=0,to=10,ylab="p",ylim=c(0,0.8))
+curve(dgamma(x,1,scale=1),from=0,to=10,add=T,col="red")
+curve(dgamma(x,1.5,scale=1.5),from=0,to=10,add=T,col="blue")
+
+###when alpha changed
+curve(dgamma(x,1.5,scale=1),from=0,to=6,ylab="p",ylim=c(0,0.8))
+curve(dgamma(x,1,scale=1),from=0,to=6,add=T,col="red")
+curve(dgamma(x,2,scale=1),from=0,to=6,add=T,col="blue")
+
+###when lamda changed
+curve(dgamma(x,1.5,scale=1),from=0,to=6,ylab="p",ylim=c(0,0.8))
+curve(dgamma(x,1.5,scale=2),from=0,to=6,add=T,col="red")
+curve(dgamma(x,1.5,scale=0.75),from=0,to=6,add=T,col="blue")
+
+
