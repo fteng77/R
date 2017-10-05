@@ -7,3 +7,7 @@
 - sudo apt-get update
 - sudo apt-get install r-base
 - sudo R
+
+参考文献：
+1. http://blog.csdn.net/lzz360/article/details/46994359
+1. http://blog.csdn.net/wzgl__wh/article/details/53440607
