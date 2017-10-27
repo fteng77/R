@@ -11,3 +11,12 @@
 ## 参考文献：
 1. http://blog.csdn.net/lzz360/article/details/46994359
 1. http://blog.csdn.net/wzgl__wh/article/details/53440607
+
+# 如何在ubuntu16.04中安装Rstudio
+## 输入sudo apt-get install gdebi-core
+## 转到deb包的文件夹，如：cd /home/tony/下载
+## 安装命令：sudo gdebi -n rstudio-xenial-1.1.383-amd64.deb
+
+## 参看文献：
+1. http://blog.csdn.net/duxu24/article/details/53611510
+
