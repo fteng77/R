@@ -1,0 +1,10 @@
+key<-"8c0671ce17604a6f3e22a2daa81d9aad"#高德地图
+jingdu<-116.481488
+weidu<-39.990464
+type<-"商务写字楼"
+banjing<-1000
+url<-paste("http://restapi.amap.com/v3/geocode/regeo?key=",key,"&location=",jingdu,",",weidu,"&poitype=",type,"&radius=",banjing,"&extensions=all&batch=false&roadlevel=0",sep="")
+library(xml2)
+library(rvest)
+x<-read_html(url)
+html_nodes(x,"pois")
