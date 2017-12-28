@@ -19,6 +19,23 @@ connect <- url(url_string)
 
 #读取json数据
 geo <- fromJSON(paste(readLines(connect,warn = F), collapse = ""))
+n <- length(geo$regeocode$pois)
+type1<-c()
+distance<-c()
+jingdu1<-c()
+weidu1<-c()
+area<-c()
+
+for(i in 1:n){
+  type1<-c(type1,geo$regeocode$pois[[i]]$type)
+  distance<-c(distance,as.numeric(geo$regeocode$pois[[i]]$distance))
+  location<-unlist(strsplit(geo$regeocode$pois[[i]]$location,","))
+  jingdu1<-c(jingdu1,location[1])
+  weidu1<-c(weidu1,location[2])
+  area<-c(area,geo$regeocode$pois[[i]]$businessarea)
+}
+
+x<-data.frame(type1,distance,jingdu1,weidu1,area)
 
 
 
