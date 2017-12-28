@@ -12,7 +12,7 @@ weidu<-39.990464
 type<-"商务写字楼"
 banjing<-1000
 
-#生成网址，下载网页（注意：默认格式json）
+#生成网址，下载网页（注意：默认格式为json）
 url<-paste("http://restapi.amap.com/v3/geocode/regeo?key=",key,"&location=",jingdu,",",weidu,"&poitype=",type,"&radius=",banjing,"&extensions=all&batch=false&roadlevel=0",sep="")
 url_string <- URLencode(url)
 connect <- url(url_string)
