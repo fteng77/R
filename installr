@@ -1,2 +1,3 @@
 library(installr)
 install.R("http://mirrors.ustc.edu.cn/CRAN/bin/windows/base/") 
+updateR(cran_mirror = "http://mirrors.ustc.edu.cn/CRAN/")
