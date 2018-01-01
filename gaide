@@ -1,0 +1,54 @@
+# 载入需要的包
+# library(XML)
+# library(xml2)
+# library(rvest)
+library(rjson)
+library(bitops)
+library(RCurl)
+
+#输入高德地图的key
+key<-"8c0671ce17604a6f3e22a2daa81d9aad"#高德地图
+
+#导入数据
+dizhen<-read.csv("D:/dizhen/dizhen-sample.csv")
+
+ri<-dizhen[,1]
+shijian<-dizhen[,2]
+weidu<-dizhen[,3]
+jingdu<-dizhen[,4]
+
+jingqu<-paste(110200:110209,collapse = "|")
+zhuzhai<-paste(120300:120304,collapse="|")
+
+banjing<-3000
+
+y<-data.frame()
+
+for(i in 1:nrow(dizhen)){
+  jingdu0<-jingdu[i]
+  weidu0<-weidu[i]
+  #生成网址，下载网页（注意：默认格式为json）
+  url<-paste("http://restapi.amap.com/v3/geocode/regeo?key=",key,"&location=",jingdu0,",",weidu0,"&poitype=",jingqu,"&radius=",banjing,"&extensions=all&batch=false&roadlevel=0",sep="")
+  url_string <- URLencode(url)
+  connect <- url(url_string)
+  
+  #读取json数据
+  geo <- fromJSON(paste(readLines(connect,warn = F), collapse = ""))
+  n <- length(geo$regeocode$pois)
+  distance<-c()
+  jingdu1<-c()
+  weidu1<-c()
+  
+  if(n > 0) {
+    for(j in 1:n){
+    distance<-c(distance,as.numeric(geo$regeocode$pois[[j]]$distance))
+    location<-unlist(strsplit(geo$regeocode$pois[[j]]$location,","))
+    jingdu1<-c(jingdu1,location[1])
+    weidu1<-c(weidu1,location[2])
+  }
+  
+  x<-data.frame(shijian=dizhen[i,1],zhenji=dizhen[i,6],distance,jingdu=jingdu1,weidu=weidu1)
+  y<-rbind(y,x)
+  }
+  else next
+}
