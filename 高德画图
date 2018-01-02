@@ -1,0 +1,34 @@
+library(tidyverse)
+
+dizhen<-read.csv("D:/dizhen-sample.csv")
+dizhen<-as.tibble(dizhen)
+
+summary(dizhen)
+dizhen.new<-filter(dizhen,zhenji>=2,jingdu>0, weidu>0)
+
+dates<-paste(dizhen.new$date,dizhen.new$time, sep = " ")
+dates<-strptime(dates, "%Y-%m-%d %H:%M")
+dates.year<-format(dates,"%Y")
+dates.month<-format(dates,"%m")
+dates.weekday<-weekdays(dates)
+dates.day<-format(dates,"%d")
+dates.hour<-format(dates,"%H")
+
+dizhen.new<-cbind(dizhen.new,dates.year,dates.month,dates.weekday,dates.day,dates.hour)
+
+# filter(dizhen.new, jingdu<0)
+qplot(jingdu,weidu,data=dizhen.new)
+
+library(maptools)
+china_map <-readShapePoly("D:/bou2_4p.shp")
+ggplot()+
+
+  geom_polygon(data=china_map, aes(x=long, y=lat, group=group),fill="grey95", colour="red",size=0.25)+ #中国地图
+
+  geom_point(data=dizhen.new, aes(x = jingdu,y = weidu),size=0.25,fill="black", alpha=0.8,shape=1, colour="black")
+
+# library(maps)
+# library(mapdata)
+# x<-map("china")
+# plot(x,type="l")
+# plot(dizhen.new$jingdu,dizhen.new$weidu,add=T)
