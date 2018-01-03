@@ -1,0 +1,98 @@
+# 载入需要的包
+# library(XML)
+# library(xml2)
+# library(rvest)
+library(rjson)
+library(bitops)
+library(RCurl)
+library(tidyverse)
+
+wd0<-getwd()
+setwd("D:/dizhen")
+
+######################
+#第一部分：清理数据
+######################
+
+dizhen<-read.csv("dizhen.csv",stringsAsFactors=F)
+dizhen<-as.tibble(dizhen)
+
+# summary(dizhen)
+dizhen.new<-filter(dizhen,zhenji>=2,jingdu>0, weidu>0)
+
+dates<-paste(dizhen.new$date,dizhen.new$time, sep = " ")
+dates<-strptime(dates, "%Y/%m/%d %H:%M")
+dates.year<-format(dates,"%Y")
+dates.month<-format(dates,"%m")
+dates.weekday<-weekdays(dates)
+dates.day<-format(dates,"%d")
+dates.hour<-format(dates,"%H")
+
+dizhen<-cbind(dizhen.new,dates.year,dates.month,dates.weekday,dates.day,dates.hour)
+
+######################
+#第二部分：搜集数据
+######################
+
+#输入高德地图的key
+key<-"8c0671ce17604a6f3e22a2daa81d9aad"#高德地图
+
+#导入数据
+#dizhen<-read.csv("D:/dizhen/dizhen-new.csv",stringsAsFactors=F)#导入数据
+nd<-1000
+dizhen<-cbind(dizhen[1:nd,1:7],TRUE)#加入是否一个变量（初始值为T）
+
+riqi<-dizhen$date
+shijian<-dizhen$time
+weidu<-dizhen$weidu
+jingdu<-dizhen$jingdu
+zhenji<-dizhen$zhenji
+
+jingqu<-paste(110200:110209,collapse = "|")
+zhuzhai<-paste(120300:120304,collapse="|")
+
+banjing<-3000
+
+yxdq<-data.frame()
+#x.temp<-data.frame()
+
+for(i in 1:nd){
+  jingdu0<-jingdu[i]
+  weidu0<-weidu[i]
+  #生成网址，下载网页（注意：默认格式为json）
+  url<-paste("http://restapi.amap.com/v3/geocode/regeo?key=",key,"&location=",jingdu0,",",weidu0,"&poitype=",jingqu,"&radius=",banjing,"&extensions=all&batch=false&roadlevel=0",sep="")
+  url_string <- URLencode(url)
+  connect <- url(url_string)
+  
+  #读取json数据
+  geo <- fromJSON(paste(readLines(connect,warn = F), collapse = ""))
+  n <- length(geo$regeocode$pois)
+  # sheng<-geo$regeocode$addressComponent$province
+  # shi<-geo$regeocode$addressComponent$city
+  # qu<-geo$regeocode$addressComponent$district
+  # jiedao<-geo$regeocode$addressComponent$township
+  
+  distance<-c()
+  jingdu1<-c()
+  weidu1<-c()
+  
+  if(n > 0) {
+    for(j in 1:n){
+      distance<-c(distance,as.numeric(geo$regeocode$pois[[j]]$distance))
+      location<-unlist(strsplit(geo$regeocode$pois[[j]]$location,","))
+      jingdu1<-c(jingdu1,location[1])
+      weidu1<-c(weidu1,location[2])
+    }
+    
+    x<-data.frame(riqi=riqi[i],shijian=shijian[i],zhenji=zhenji[i],distance,jingdu=jingdu1,weidu=weidu1)
+    yxdq<-rbind(yxdq,x)#受影响的地区
+    
+  }
+  else dizhen[i,8]<-FALSE
+  # x.temp<-rbind(x.temp,c(sheng,shi,qu,jiedao))
+}
+# dizhen.new<-cbind(dizhen,x.temp)
+write.csv(yxdq,"yxdq.csv")
+write.csv(dizhen,"dizhen-new.csv")
+
+setwd(wd0)
