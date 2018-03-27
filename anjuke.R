@@ -4,16 +4,17 @@ library(xml2)
 library(rvest)
 library(stringr)
 # maxp <-5780
+records<- matrix(rep(NA,11),ncol=11)%>%as.data.frame()
 
 web<-paste("https://nb.anjuke.com/sale/yinzhou/p",c(1:5),"-t105/#filtersort",sep="")
-for(i in c(1:100)){
+for(i in c(1:length(web))){
   
   words<-read_html(web[i],encoding="UTF-8")
   
   #v1<-words%>%html_nodes(".sale-left") %>% html_nodes(".over-bg") %>% data.frame()
   v1<-words%>%html_nodes(".sale-left") %>% html_nodes(".details-item")%>%html_text()
   v2<-words%>%html_nodes(".sale-left") %>% html_nodes(".price-det")%>%html_text()%>%str_replace_all("万","")%>%as.numeric()
-  records<-matrix(rep(NA,11),ncol=11)%>%as.data.frame()
+  records1<- matrix(rep(NA,11),ncol=11)%>%as.data.frame()
   
   if(length(v1)!=2*length(v2)) stop("youwenti")
   
@@ -38,10 +39,11 @@ for(i in c(1:100)){
     bankuai<-dizhi[2]
     jutidizhi<-dizhi[3]
     
-    record<-c(shi,ting,mianji,louling,lougao,louceng,xiaoqu,qu,bankuai,jutidizhi,price=v2[j])
-    records<-rbind(records,record)
+    record<-c(shi,ting,mianji,louling,lougao,louceng,xiaoqu,qu,bankuai,jutidizhi,price=v2[(1+j)/2])
+    records1<-rbind(records1,record)
   }
   # x1<-str_replace(v1[1],"[\n]","")%>%str_replace(" ","")%>%str_trim()
+  records<-rbind(records,records1)
 
 }
 
