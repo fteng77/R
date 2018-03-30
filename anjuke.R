@@ -6,7 +6,7 @@ library(stringr)
 # maxp <-5780
 records<- matrix(rep(NA,11),ncol=11)%>%as.data.frame()
 
-web<-paste("https://nb.anjuke.com/sale/yinzhou/p",c(1:5),"-t105/#filtersort",sep="")
+web<-paste("https://nb.anjuke.com/sale/yinzhou/p",c(1:200),"-t105/#filtersort",sep="")
 for(i in c(1:length(web))){
   
   words<-read_html(web[i],encoding="UTF-8")
@@ -47,4 +47,4 @@ for(i in c(1:length(web))){
 
 }
 
-write.csv(records,"D:/records.csv")
+write.csv(records,"D:/records1.csv")
